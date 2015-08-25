@@ -1,0 +1,241 @@
+#   $Header: /home/adu/RCS/.bashrc,v 1.41 2015/03/23 10:39:50 adu Exp adu $
+#
+#   1. variables
+#   ============
+#
+#export PS1='\[\e]0;\u@\H:\w\a\e[0;36m\]\u@\h\[\e[m\]:\[\e[1;31m\]\W\[\e[m\] \[\e[0;32m\](\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
+#export PS1='\[\e]0;\u@\H:\w\a\]\u@\h:\W (\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g")) $ '
+#export PS1='\[\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
+#export PS1='$? \[\e[s\e[1;$((COLUMNS-18))H$(date "+%FT%T")\e[u\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (#\#|u:$(who | wc -l)|l:$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
+export PS1='$? \[\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (#\#|u:$(who | wc -l)|l:$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
+export PS4='[-- \t \e[0;35m$BASH_SOURCE:\[\e[0;31m\]$LINENO\[\e[m\] --] '
+#export PS4='[-- \t \e[0;35m$BASH_SOURCE:\e[0;31m$LINENO\e[m --] '
+
+export EDITOR=vi
+export HISTTIMEFORMAT='%d.%m.%Y,%H:%M:%S: '
+export HISTCONTROL=ignoreboth
+export HISTIGNORE="pwd:ls:l:lt:lh:lf:s:df -h:free:w:clear:date:..:...:cd:wer"
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US
+export LESS=-RXMa
+export PAGER="less -R"
+export PATH=$PATH:$HOME/bin
+
+export GREP_OPTIONS="--color=always"
+export GREP_COLORS="cx=00;33:mt=07;31"
+
+export VORDEMO=195.58.181.159
+export VORBETA=91.118.105.190
+#
+#   2. aliases
+#   ==========
+#
+unalias ls 2>/dev/null
+alias l='ls -l --time-style="+%FT%T"'      # long listing
+alias lf='ls -F --time-style="+%FT%T"'     # short with type
+alias lh='ls -lh --time-style="+%FT%T"'    # long listing, human readable
+alias lk='ls -lSrh --time-style="+%FT%T"'  # long and all, human readable, sort by size 
+alias lt='ls -ltrh --time-style="+%FT%T"'  # newest last
+alias lu='ls -ltur --time-style="+%FT%T"'  # last accessed last
+alias ..='cd ..'
+alias ...='cd ../..'
+alias gr='grep --color=always -n'
+alias d="date '+%FT%T'"
+
+alias b-rail='pushd /server/hafas/hafas/projekte/internet/misc/b-rail/auslieferung/'
+alias sbb='pushd /server/hafas/hafas/projekte/internet/sbb/auslieferung/'
+alias vbb='pushd /server/hafas/hafas/projekte/internet/vbb/auslieferung/'
+alias misc='pushd /server/hafas/hafas/projekte/internet/misc/'
+
+alias planinfo='/server/public/public/utils/linux/bin/planinfo'
+alias pw='cd /mnt/admin_share_lv/Dokumentationen/HaCon/Workshop/Bereitschaft'
+#
+#   3. options
+#   =========
+#
+#set -o ignoreeof
+#set -o nounset
+set -o vi
+shopt -s histverify
+shopt -s checkwinsize
+#
+#   4.functions
+#   ===========
+#   4.1. make directory and change into it
+#   --------------------------------------
+#
+mcd ()
+{
+    mkdir -p "$@" && eval cd "\"\$$#\""
+}
+#
+#   4.2. show scp friendly position
+#   -------------------------------
+#
+wer ()
+{
+    local U=$(who mom loves | awk '{print $1}')
+    local H=$(hostname -f)
+    local W=$(pwd)
+    if [ $# -eq 0 ]
+    then
+        echo $U@$H:$W
+    else
+        echo $U@$H:$W/$1
+    fi
+}
+#
+#   4.3. up n directories
+#   ---------------------
+#
+up ()
+{
+    local x=''
+    for i in $(seq ${1:-1})
+    do
+        x="$x../"
+    done
+    cd $x
+}
+#
+#   4.4. change into a parallel directory
+#   -------------------------------------
+#
+cwd ()
+{
+    pushd ${PWD/$1/$2};
+}
+#
+#   4.5. colourize stderr
+#   ---------------------
+#   (from commandline.fu)
+#
+color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
+#
+#   4.6. only for "fun"
+#   -------------------
+#
+command_not_found_handle ()
+{
+    echo "Lern tippen!"
+    echo \"$1\" gibbet es nich
+    D=$(date '+%FT%T')
+    echo $D $1 >> $HOME/.vertipper
+}
+#
+#   4.7. colourize output
+#   ---------------------
+#   (to be used like "ps -ef | c hafas")
+#
+c ()
+{
+    egrep --color=always "|$1"
+}
+#
+#   4.8. create shebang in file
+#   ---------------------------
+#
+shebang ()
+{
+    sed -i '1s@^@#!\/usr\/bin\/env bash\n\n@' $1
+    chmod +x $1
+}
+#
+#   4.9. horizontal rule
+#   --------------------
+#
+hr ()
+{
+    yes -- ${@:-=} | tr -d $'\n' | head -c $COLUMNS
+}
+#
+#   4.10. get phone number
+#   ----------------------
+#
+tel ()
+{
+    local OLD_GREP_OPTIONS
+    OLD_GREP_OPTIONS=$GREP_OPTIONS
+    unset GREP_OPTIONS
+    curl -s http://memnon.local.hacon.de/white_pages/ | \
+    grep -A 1 'http://memnon.local.hacon.de/white_pages/user/' | \
+    awk '{printf ("%s ", $0); getline; printf ("%s ", $0); getline; print $0;}' | \
+    sed 's/>/#/g' | sed 's/</#/g' |\
+    awk -F'#' '{printf ("%s: %s\n", $5, $13)}' | grep -i --color "$@"
+    GREP_OPTIONS=$OLD_GREP_OPTIONS
+}
+#
+#   4.11. box um Text
+#   -----------------
+#
+
+box ()
+{
+    t="$1xxxx";
+    c=${2:-=};
+    echo ${t//?/$c};
+    echo "$c $1 $c";
+    echo ${t//?/$c};
+}
+#
+#   4.12. make data directory
+#   -------------------------
+#
+mkdd ()
+{
+    D=$(date '+%F')
+    mkdir $D
+    cd $D
+}
+#
+#   4.12a screen saver
+#   -----------------
+#
+scrsav ()
+{
+if [ $# -gt 0 ]
+then
+    for j in $(seq 1 5000)
+    do
+        echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$(ascii $((32+$RANDOM%95)))"
+        echo -ne "\033[$((LINES-1));0H"
+    done
+fi
+while true
+do
+    echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$(ascii $((32+$RANDOM%95)))"
+    echo -ne "\033[$((LINES-1));0H"
+    sleep 1
+done
+    
+}
+#
+#   4.14. print every nth line
+#   --------------------------
+#   (commandlinefu)
+#
+every ()
+{
+    N=$1
+    S=1
+    [ "${N:0:1}" = '-' ] && N="${N:1}" || S=0; sed -n "$S~${N}p"
+}
+#
+#   5. commandlinefu.com
+#   ====================
+#
+alias duh='dulist=$(du -sh */); for i in T G M K; do printf "$dulist"|egrep "^[0-9\.]+$i" | sort -rn; done'
+#
+#   6. stuff
+#   ========
+#
+alias s0='while true; do for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))"; echo -ne "\033[$((LINES-1));0H"; sleep 1; done; for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H ";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done; done'
+alias s1='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H ";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done'
+alias s2='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done'
+alias s3='while true; do for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m#"; echo -ne "\033[$((LINES-1));0H"; sleep 1; done; for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H ";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done; done'
+alias s4='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m#"; echo -ne "\033[$((LINES-1));0H"; sleep 1; done'
+. /etc/bash_completion
+
+alias s='date "+%FT%T" >> ~/.smoke; tail -2 ~/.smoke'
+
+#EOF

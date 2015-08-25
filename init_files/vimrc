@@ -1,0 +1,30 @@
+" a vimrc with nice stuff
+
+runtime! debian.vim
+set autoindent
+set background=light
+set expandtab
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set listchars=tab:>-,trail:~,eol:<,extends:>
+set nobackup
+set nowrap
+set number
+set ruler
+set scrolloff=999
+set shiftwidth=4
+set showcmd
+set showmatch
+set showmode
+set smartcase
+set statusline=%t%a\ buf_no:\ %n\ %w%m%r\ %{v:register}\ %=[%{strlen(&ft)?&ft:'no\ filetype'}]\ %l\/%L:%c\ %p%%\ (0x%B)\ 
+set softtabstop=4
+set visualbell
+syntax on
+
+runtime ftplugin/man.vim
+
+imap ,, <ESC>
+" EOF
