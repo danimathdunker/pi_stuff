@@ -3,13 +3,8 @@
 #   1. variables
 #   ============
 #
-#export PS1='\[\e]0;\u@\H:\w\a\e[0;36m\]\u@\h\[\e[m\]:\[\e[1;31m\]\W\[\e[m\] \[\e[0;32m\](\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
-#export PS1='\[\e]0;\u@\H:\w\a\]\u@\h:\W (\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g")) $ '
-#export PS1='\[\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (\#/$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
-#export PS1='$? \[\e[s\e[1;$((COLUMNS-18))H$(date "+%FT%T")\e[u\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (#\#|u:$(who | wc -l)|l:$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
 export PS1='$? \[\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (#\#|u:$(who | wc -l)|l:$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
 export PS4='[-- \t \e[0;35m$BASH_SOURCE:\[\e[0;31m\]$LINENO\[\e[m\] --] '
-#export PS4='[-- \t \e[0;35m$BASH_SOURCE:\e[0;31m$LINENO\e[m --] '
 
 export EDITOR=vi
 export HISTTIMEFORMAT='%d.%m.%Y,%H:%M:%S: '
@@ -21,11 +16,7 @@ export LESS=-RXMa
 export PAGER="less -R"
 export PATH=$PATH:$HOME/bin
 
-export GREP_OPTIONS="--color=always"
 export GREP_COLORS="cx=00;33:mt=07;31"
-
-export VORDEMO=195.58.181.159
-export VORBETA=91.118.105.190
 #
 #   2. aliases
 #   ==========
@@ -42,13 +33,6 @@ alias ...='cd ../..'
 alias gr='grep --color=always -n'
 alias d="date '+%FT%T'"
 
-alias b-rail='pushd /server/hafas/hafas/projekte/internet/misc/b-rail/auslieferung/'
-alias sbb='pushd /server/hafas/hafas/projekte/internet/sbb/auslieferung/'
-alias vbb='pushd /server/hafas/hafas/projekte/internet/vbb/auslieferung/'
-alias misc='pushd /server/hafas/hafas/projekte/internet/misc/'
-
-alias planinfo='/server/public/public/utils/linux/bin/planinfo'
-alias pw='cd /mnt/admin_share_lv/Dokumentationen/HaCon/Workshop/Bereitschaft'
 #
 #   3. options
 #   =========
@@ -149,23 +133,7 @@ hr ()
     yes -- ${@:-=} | tr -d $'\n' | head -c $COLUMNS
 }
 #
-#   4.10. get phone number
-#   ----------------------
-#
-tel ()
-{
-    local OLD_GREP_OPTIONS
-    OLD_GREP_OPTIONS=$GREP_OPTIONS
-    unset GREP_OPTIONS
-    curl -s http://memnon.local.hacon.de/white_pages/ | \
-    grep -A 1 'http://memnon.local.hacon.de/white_pages/user/' | \
-    awk '{printf ("%s ", $0); getline; printf ("%s ", $0); getline; print $0;}' | \
-    sed 's/>/#/g' | sed 's/</#/g' |\
-    awk -F'#' '{printf ("%s: %s\n", $5, $13)}' | grep -i --color "$@"
-    GREP_OPTIONS=$OLD_GREP_OPTIONS
-}
-#
-#   4.11. box um Text
+#   4.10. box um Text
 #   -----------------
 #
 
@@ -178,7 +146,7 @@ box ()
     echo ${t//?/$c};
 }
 #
-#   4.12. make data directory
+#   4.11. make data directory
 #   -------------------------
 #
 mkdd ()
@@ -188,7 +156,7 @@ mkdd ()
     cd $D
 }
 #
-#   4.12a screen saver
+#   4.12 screen saver
 #   -----------------
 #
 scrsav ()
@@ -210,7 +178,7 @@ done
     
 }
 #
-#   4.14. print every nth line
+#   4.13. print every nth line
 #   --------------------------
 #   (commandlinefu)
 #
@@ -234,8 +202,4 @@ alias s1='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS)
 alias s2='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m$((RANDOM%10))";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done'
 alias s3='while true; do for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m#"; echo -ne "\033[$((LINES-1));0H"; sleep 1; done; for jjj in `seq 1 10`; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H ";  echo -ne "\033[$((LINES-1));0H"; sleep 1; done; done'
 alias s4='while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m#"; echo -ne "\033[$((LINES-1));0H"; sleep 1; done'
-. /etc/bash_completion
-
-alias s='date "+%FT%T" >> ~/.smoke; tail -2 ~/.smoke'
-
 #EOF
