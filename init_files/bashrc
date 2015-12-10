@@ -3,7 +3,7 @@
 #   1. variables
 #   ============
 #
-export PS1='$? \[\e]0;\u@\H:\w\a\e[0;32m\]\u@\h:\W (#\#|u:$(who | wc -l)|l:$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
+export PS1='$? \[\e]0;\u@\H:\w\a\e[0;34m\]\u@\h:\W (#\#|$(uptime|sed -e "s/.*: \([^,]*\).*/\1/" -e "s/ //g"))\[\e[m\] $ '
 export PS4='[-- \t \e[0;35m$BASH_SOURCE:\[\e[0;31m\]$LINENO\[\e[m\] --] '
 
 export EDITOR=vi
