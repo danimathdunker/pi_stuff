@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 #
 #   cheerlights.py - get cheerlights colour and sends it to Arduino via serial.
 #
@@ -6,21 +6,27 @@
 #
 ########################################################################
 
-import urllib.request
+#import urllib.request
+import urllib
+import serial
+import time
 
-f = urllib.request.urlopen('http://api.thingspeak.com/channels/1417/field/2/last.txt')
-rgb = f.read ()
+#f = urllib.request.urlopen('http://api.thingspeak.com/channels/1417/field/2/last.txt')
+#rgb = f.read ()
 
-r = int (rgb [1:3], 16)
-g = int (rgb [3:5], 16)
-b = int (rgb [5:], 16)
-print (r)
-print (g)
-print (b)
+while True:
+    opener = urllib.FancyURLopener({})
+    f = opener.open ('http://api.thingspeak.com/channels/1417/field/2/last.txt')
+    rgb = f.read ()
 
-rstr = str (r).zfill (3)
-gstr = str (g).zfill (3)
-bstr = str (g).zfill (3)
+    r = int (rgb [1:3], 16)
+    g = int (rgb [3:5], 16)
+    b = int (rgb [5:], 16)
 
-print (rstr + gstr + bstr + "#")
+    rstr = str (r).zfill (3)
+    gstr = str (g).zfill (3)
+    bstr = str (b).zfill (3)
+
+    print (rstr + gstr + bstr + "#")
+    time.sleep (10)
 
