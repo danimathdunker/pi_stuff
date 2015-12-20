@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export LANG=en_US.UTF-8
+cd /home/andreas/rrdtool/load
+D=$(date '+%s')
+L=$(uptime | awk '{print $10}' | sed 's#,##')
+rrdtool update load.rrd $D:$L
+#echo "rrdtool update load.rrd $D:$L" >> qqq

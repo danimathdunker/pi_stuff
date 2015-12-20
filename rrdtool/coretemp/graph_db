@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd /home/andreas/rrdtool/coretemp
+rrdtool graph coretemp.png -t "Temperature on $(hostname)" -l 0 \
+    --legend-position=south --watermark "$(date '+%FT%T')" \
+    DEF:temp=coretemp.rrd:temp:LAST LINE1:temp#FF0000:" C"
+
+cp -p coretemp.png ~/public_html

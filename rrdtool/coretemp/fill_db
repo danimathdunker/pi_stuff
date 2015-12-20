@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export LANG=en_US.UTF-8
+cd /home/andreas/rrdtool/coretemp
+D=$(date '+%s')
+T=$(/usr/bin/vcgencmd measure_temp | cut -d '=' -f2 | sed 's/..$//')
+rrdtool update coretemp.rrd $D:$T
+#echo "rrdtool update coretemp.rrd $D:$T" >> qqq

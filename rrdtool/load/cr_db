@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rm load.rrd
+A=$(date '+%s')
+rrdtool create load.rrd --start $A --step=60 \
+    DS:load:GAUGE:120:0:U \
+    RRA:LAST:0.5:1:1440
