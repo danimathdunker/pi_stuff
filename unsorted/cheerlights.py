@@ -11,6 +11,13 @@ import urllib
 import serial
 import time
 
+oldcol = '000000000#'
+
+s = serial.Serial ('/dev/ttyACM0', 9600)
+s.open ()
+#print ('waiting 10 seconds')
+time.sleep (10)
+
 #f = urllib.request.urlopen('http://api.thingspeak.com/channels/1417/field/2/last.txt')
 #rgb = f.read ()
 
@@ -27,6 +34,12 @@ while True:
     gstr = str (g).zfill (3)
     bstr = str (b).zfill (3)
 
-    print (rstr + gstr + bstr + "#")
+    col = rstr + gstr + bstr + "#"
+#    print (rstr + gstr + bstr + "#")
+#    print (col)
+    if ( col != oldcol):
+        oldcol = col
+#        print ('new color')
+        s.write (col)
     time.sleep (10)
 
