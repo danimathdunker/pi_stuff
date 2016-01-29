@@ -9,21 +9,18 @@ export PS4='[-- \t \e[0;35m$BASH_SOURCE:\[\e[0;31m\]$LINENO\[\e[m\] --] '
 export EDITOR=vi
 export HISTTIMEFORMAT='%d.%m.%Y,%H:%M:%S: '
 export HISTCONTROL=ignoreboth
-export HISTIGNORE="pwd:ls:l:lt:lh:lf:s:df -h:free:w:clear:date:..:...:cd:wer"
+export HISTIGNORE="pwd:ls:l:lt:lh:lf:ll:s:df -h:free:w:clear:date:..:...:cd:wer"
 export LANG=en_GB.utf8
 export LANGUAGE=en_US
 export LESS=-RXMa
 export PAGER="less -R"
-export PATH=$PATH:$HOME/bin
-
-export GREP_COLORS="cx=00;33:mt=07;31"
 #
 #   2. aliases
 #   ==========
 #
 unalias ls 2>/dev/null
-alias l='ls -l --time-style="+%FT%T"'      # long listing
-alias lf='ls -F --time-style="+%FT%T"'     # short with type
+alias ll='ls -l --time-style="+%FT%T"'     # long listing
+alias l='ls -F --time-style="+%FT%T"'      # short with type
 alias lh='ls -lh --time-style="+%FT%T"'    # long listing, human readable
 alias lk='ls -lSrh --time-style="+%FT%T"'  # long and all, human readable, sort by size 
 alias lt='ls -ltrh --time-style="+%FT%T"'  # newest last
@@ -37,8 +34,6 @@ alias d="date '+%FT%T'"
 #   3. options
 #   =========
 #
-#set -o ignoreeof
-#set -o nounset
 set -o vi
 shopt -s histverify
 shopt -s checkwinsize
