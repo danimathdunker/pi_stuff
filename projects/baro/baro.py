@@ -12,14 +12,8 @@ device=i2c.get_i2c_device(0x77) # address of BMP
 # this value is necessary to calculate the correct height above sealevel
 # its also included in airport wheather information ATIS named as QNH
 # unit is hPa
-<<<<<<< HEAD
-#QNH=1020
-QNH=1009.5
-print("QNH:{:.0f}".format(QNH)+" hPA")
-=======
 QNH=1020
 # print("QNH:{:.0f}".format(QNH)+" hPA")
->>>>>>> c30717178f554aac8290baf506e8972461f72ddc
 
 # power mode
 # POWER_MODE=0 # sleep mode
@@ -175,14 +169,9 @@ if (device.readS8(BMP280_REGISTER_CHIPID) == 0x58): # check sensor id 0x58=BMP28
         press=press+(var1+var2+dig_P7)/16.0 # formula for pressure from datasheet
 
         altitude= 44330.0 * (1.0 - pow(press / (QNH*100), (1.0/5.255))) # formula for altitude from airpressure
-<<<<<<< HEAD
-        print("temperature:{:.2f}".format(temp)+" C  pressure:{:.2f}".format(press/100)+" hPa   altitude:{:.2f}".format(altitude)+" m")
-        time.sleep (5)
-=======
         loctime = time.strftime (time.strftime ("%FT%T"))
         print (loctime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
 #        print(loctime + " temperature:{:.2f}".format(temp)+" C  pressure:{:.2f}".format(press/100)+" hPa   altitude:{:.2f}".format(altitude)+" m")
         time.sleep (30)
->>>>>>> c30717178f554aac8290baf506e8972461f72ddc
 
 
