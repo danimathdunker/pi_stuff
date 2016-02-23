@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+#   doit_1min - several things to be run in
+#               one minute intervals
+#
+#   2016-02-23   Andreas Dunker   created
+#
+########################################################################
+/home/andreas/projekte/sensornet/bmp280/baro.py
+
+for j in coretemp coretemp2 load
+do
+    /home/andreas/rrdtool/$j/fill_db
+done
+
+exit 0

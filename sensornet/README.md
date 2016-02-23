@@ -1,4 +1,6 @@
-# Raspberry Pi projects
+# Raspberry Pi Sensor Network
+
+Programs for the home sensor network
 
 ## baro
 
