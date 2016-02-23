@@ -6,8 +6,6 @@
 ########################################################################
 import Adafruit_GPIO.I2C as I2C
 import time
-import paho.mqtt.client as mqtt
-
 i2c = I2C
 device=i2c.get_i2c_device(0x77) # address of BMP
 
@@ -121,62 +119,60 @@ if (device.readS8(BMP280_REGISTER_CHIPID) == 0x58): # check sensor id 0x58=BMP28
     #print(" dig_P4:",dig_P4," dig_P5:",dig_P5," dig_P6:",dig_P6)
     #print(" dig_P7:",dig_P7," dig_P8:",dig_P8," dig_P9:",dig_P9)
 
-    raw_temp_msb=device.readU8(BMP280_REGISTER_TEMPDATA_MSB) # read raw temperature msb
-    raw_temp_lsb=device.readU8(BMP280_REGISTER_TEMPDATA_LSB) # read raw temperature lsb
-    raw_temp_xlsb=device.readU8(BMP280_REGISTER_TEMPDATA_XLSB) # read raw temperature xlsb
-    raw_press_msb=device.readU8(BMP280_REGISTER_PRESSDATA_MSB) # read raw pressure msb
-    raw_press_lsb=device.readU8(BMP280_REGISTER_PRESSDATA_LSB) # read raw pressure lsb
-    raw_press_xlsb=device.readU8(BMP280_REGISTER_PRESSDATA_XLSB) # read raw pressure xlsb
+    while True: # loop
+        raw_temp_msb=device.readU8(BMP280_REGISTER_TEMPDATA_MSB) # read raw temperature msb
+        raw_temp_lsb=device.readU8(BMP280_REGISTER_TEMPDATA_LSB) # read raw temperature lsb
+        raw_temp_xlsb=device.readU8(BMP280_REGISTER_TEMPDATA_XLSB) # read raw temperature xlsb
+        raw_press_msb=device.readU8(BMP280_REGISTER_PRESSDATA_MSB) # read raw pressure msb
+        raw_press_lsb=device.readU8(BMP280_REGISTER_PRESSDATA_LSB) # read raw pressure lsb
+        raw_press_xlsb=device.readU8(BMP280_REGISTER_PRESSDATA_XLSB) # read raw pressure xlsb
 
-    raw_temp=(raw_temp_msb <<12)+(raw_temp_lsb<<4)+(raw_temp_xlsb>>4) # combine 3 bytes  msb 12 bits left, lsb 4 bits left, xlsb 4 bits right
-    raw_press=(raw_press_msb <<12)+(raw_press_lsb <<4)+(raw_press_xlsb >>4) # combine 3 bytes  msb 12 bits left, lsb 4 bits left, xlsb 4 bits right
-    # print("raw_press_msb:",raw_press_msb," raw_press_lsb:",raw_press_xlsb," raw_press_xlsb:",raw_press_xlsb)
-    # print("raw_temp_msb:",raw_temp_msb,"  raw_temp_lsb:",raw_temp_lsb," raw_temp_xlsb:",raw_temp_xlsb)
-    # print("raw_press",raw_press)
+        raw_temp=(raw_temp_msb <<12)+(raw_temp_lsb<<4)+(raw_temp_xlsb>>4) # combine 3 bytes  msb 12 bits left, lsb 4 bits left, xlsb 4 bits right
+        raw_press=(raw_press_msb <<12)+(raw_press_lsb <<4)+(raw_press_xlsb >>4) # combine 3 bytes  msb 12 bits left, lsb 4 bits left, xlsb 4 bits right
+        # print("raw_press_msb:",raw_press_msb," raw_press_lsb:",raw_press_xlsb," raw_press_xlsb:",raw_press_xlsb)
+        # print("raw_temp_msb:",raw_temp_msb,"  raw_temp_lsb:",raw_temp_lsb," raw_temp_xlsb:",raw_temp_xlsb)
+        # print("raw_press",raw_press)
 
-    # the following values are from the calculation example in the datasheet
-    # this values can be used to check the calculation formulas
-    # dig_T1=27504
-    # dig_T2=26435
-    # dig_T3=-1000
-    # dig_P1=36477
-    # dig_P2=-10685
-    # dig_P3=3024
-    # dig_P4=2855
-    # dig_P5=140
-    # dig_P6=-7
-    # dig_P7=15500
-    # dig_P8=-14600
-    # dig_P9=6000
-    # t_fine=128422.2869948
-    # raw_temp=519888
-    # raw_press=415148
+        # the following values are from the calculation example in the datasheet
+        # this values can be used to check the calculation formulas
+        # dig_T1=27504
+        # dig_T2=26435
+        # dig_T3=-1000
+        # dig_P1=36477
+        # dig_P2=-10685
+        # dig_P3=3024
+        # dig_P4=2855
+        # dig_P5=140
+        # dig_P6=-7
+        # dig_P7=15500
+        # dig_P8=-14600
+        # dig_P9=6000
+        # t_fine=128422.2869948
+        # raw_temp=519888
+        # raw_press=415148
 
-    var1=(raw_temp/16384.0-dig_T1/1024.0)*dig_T2 # formula for temperature from datasheet
-    var2=(raw_temp/131072.0-dig_T1/8192.0)*(raw_temp/131072.0-dig_T1/8192.0)*dig_T3 # formula for temperature from datasheet
-    temp=(var1+var2)/5120.0 # formula for temperature from datasheet
-    t_fine=(var1+var2) # need for pressure calculation
+        var1=(raw_temp/16384.0-dig_T1/1024.0)*dig_T2 # formula for temperature from datasheet
+        var2=(raw_temp/131072.0-dig_T1/8192.0)*(raw_temp/131072.0-dig_T1/8192.0)*dig_T3 # formula for temperature from datasheet
+        temp=(var1+var2)/5120.0 # formula for temperature from datasheet
+        t_fine=(var1+var2) # need for pressure calculation
 
-    var1=t_fine/2.0-64000.0 # formula for pressure from datasheet
-    var2=var1*var1*dig_P6/32768.0 # formula for pressure from datasheet
-    var2=var2+var1*dig_P5*2 # formula for pressure from datasheet
-    var2=var2/4.0+dig_P4*65536.0 # formula for pressure from datasheet
-    var1=(dig_P3*var1*var1/524288.0+dig_P2*var1)/524288.0 # formula for pressure from datasheet
-    var1=(1.0+var1/32768.0)*dig_P1 # formula for pressure from datasheet
-    press=1048576.0-raw_press # formula for pressure from datasheet
-    press=(press-var2/4096.0)*6250.0/var1 # formula for pressure from datasheet
-    var1=dig_P9*press*press/2147483648.0 # formula for pressure from datasheet
-    var2=press*dig_P8/32768.0 # formula for pressure from datasheet
-    press=press+(var1+var2+dig_P7)/16.0 # formula for pressure from datasheet
+        var1=t_fine/2.0-64000.0 # formula for pressure from datasheet
+        var2=var1*var1*dig_P6/32768.0 # formula for pressure from datasheet
+        var2=var2+var1*dig_P5*2 # formula for pressure from datasheet
+        var2=var2/4.0+dig_P4*65536.0 # formula for pressure from datasheet
+        var1=(dig_P3*var1*var1/524288.0+dig_P2*var1)/524288.0 # formula for pressure from datasheet
+        var1=(1.0+var1/32768.0)*dig_P1 # formula for pressure from datasheet
+        press=1048576.0-raw_press # formula for pressure from datasheet
+        press=(press-var2/4096.0)*6250.0/var1 # formula for pressure from datasheet
+        var1=dig_P9*press*press/2147483648.0 # formula for pressure from datasheet
+        var2=press*dig_P8/32768.0 # formula for pressure from datasheet
+        press=press+(var1+var2+dig_P7)/16.0 # formula for pressure from datasheet
 
-    altitude= 44330.0 * (1.0 - pow(press / (QNH*100), (1.0/5.255))) # formula for altitude from airpressure
-    loctime = time.strftime (time.strftime ("%FT%T"))
-    unixtime = time.strftime (time.strftime ("%s"))
-#    print (loctime + " " + unixtime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
-#    print(loctime + " temperature:{:.2f}".format(temp)+" C  pressure:{:.2f}".format(press/100)+" hPa   altitude:{:.2f}".format(altitude)+" m")
+        altitude= 44330.0 * (1.0 - pow(press / (QNH*100), (1.0/5.255))) # formula for altitude from airpressure
+        loctime = time.strftime (time.strftime ("%FT%T"))
+        unixtime = time.strftime (time.strftime ("%s"))
+        print (loctime + " " + unixtime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
+#        print(loctime + " temperature:{:.2f}".format(temp)+" C  pressure:{:.2f}".format(press/100)+" hPa   altitude:{:.2f}".format(altitude)+" m")
+        time.sleep (30)
 
-    client = mqtt.Client()
 
-    client.connect("localhost", 1883, 60)
-
-    client.publish ("/wohnung/misc/bmp280", loctime + " " + unixtime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
