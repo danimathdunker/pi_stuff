@@ -2,7 +2,7 @@
 
 Programs for the home sensor network
 
-## baro
+## bmp280
 
 reading temperatur and pressure from BMP280 and sending them to a MQTT topic
 

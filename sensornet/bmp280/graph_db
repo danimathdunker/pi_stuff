@@ -30,7 +30,7 @@ do
         -s "now - $ZEIT" -e now         \
         -t "Luftdruck $ZEIT"   \
         -w 800 -h 200                   \
-        -l 0 -E                         \
+        -E                         \
         -W "$(date '+%FT%T')"           \
         DEF:temp1=bmp280press.rrd:pressure:AVERAGE \
         VDEF:max1=temp1,MAXIMUM         \
