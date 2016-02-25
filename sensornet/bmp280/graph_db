@@ -19,7 +19,7 @@ do
         VDEF:max1=temp1,MAXIMUM         \
         VDEF:avg1=temp1,AVERAGE         \
         VDEF:min1=temp1,MINIMUM         \
-        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimun\l" \
+        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimum\l" \
         LINE1:temp1#0000FF:"Temperatur " \
         GPRINT:temp1:LAST:"%6.2lf °C" \
         GPRINT:max1:"\t%6.2lf °C" \
@@ -36,7 +36,7 @@ do
         VDEF:max1=temp1,MAXIMUM         \
         VDEF:avg1=temp1,AVERAGE         \
         VDEF:min1=temp1,MINIMUM         \
-        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimun\l" \
+        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimum\l" \
         LINE1:temp1#0000FF:"Luftdruck " \
         GPRINT:temp1:LAST:"%6.2lf hPa" \
         GPRINT:max1:"\t%6.2lf hPa" \
