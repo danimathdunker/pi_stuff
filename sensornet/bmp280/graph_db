@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+#   graph_db - creates graphics for temperature and pressure
+#
+#   2016-02-23   Andreas Dunker   created
+#
+########################################################################
+cd /home/andreas/projekte/sensornet/bmp280
+
+for ZEIT in "1hour" "6hours" "1day" "1week" "1month" "1year"
+do
+    rrdtool graph bmp280_temp_$ZEIT.png \
+        -s "now - $ZEIT" -e now         \
+        -t "Temperatur Arbeitszimmer $ZEIT"   \
+        -w 800 -h 200                   \
+        -l 0 -E                         \
+        -W "$(date '+%FT%T')"           \
+        DEF:temp1=bmp280temp.rrd:temperature:AVERAGE \
+        VDEF:max1=temp1,MAXIMUM         \
+        VDEF:avg1=temp1,AVERAGE         \
+        VDEF:min1=temp1,MINIMUM         \
+        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimun\l" \
+        LINE1:temp1#0000FF:"Temperatur " \
+        GPRINT:temp1:LAST:"%6.2lf °C" \
+        GPRINT:max1:"\t%6.2lf °C" \
+        GPRINT:avg1:"\t%6.2lf °C" \
+        GPRINT:min1:"\t%6.2lf °C\l"  >/dev/null
+
+    rrdtool graph bmp280_press_$ZEIT.png \
+        -s "now - $ZEIT" -e now         \
+        -t "Luftdruck $ZEIT"   \
+        -w 800 -h 200                   \
+        -E                         \
+        -W "$(date '+%FT%T')"           \
+        DEF:temp1=bmp280press.rrd:pressure:AVERAGE \
+        VDEF:max1=temp1,MAXIMUM         \
+        VDEF:avg1=temp1,AVERAGE         \
+        VDEF:min1=temp1,MINIMUM         \
+        COMMENT:"\t\t Aktuell\t\t Maximum\t\t Mittelwert\t\t Minimun\l" \
+        LINE1:temp1#0000FF:"Luftdruck " \
+        GPRINT:temp1:LAST:"%6.2lf hPa" \
+        GPRINT:max1:"\t%6.2lf hPa" \
+        GPRINT:avg1:"\t%6.2lf hPa" \
+        GPRINT:min1:"\t%6.2lf hPa\l"  >/dev/null
+done
+
+mv *.png /var/www/html/sensornet/bmp280
+exit 0

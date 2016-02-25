@@ -2,14 +2,16 @@
 #
 #   fill_db - fills the RRDs with 
 
-cd /home/andreas/projekte/sensornet/bmp280
-mosquitto_sub -v -t "/wohnung/misc/bmp280" | while read TOPIC DUMMY
+cd /home/andreas/projekte/sensornet
+mosquitto_sub -v -t "/#" | while read TOPIC DUMMY
 do
     if [ "/wohnung/misc/bmp280" = "$TOPIC" ]
     then
+        cd bmp280
         read TIME UNIXTIME TEMPERATURE PRESSURE <<< $DUMMY
         rrdtool update bmp280temp.rrd $UNIXTIME:$TEMPERATURE
         rrdtool update bmp280press.rrd $UNIXTIME:$PRESSURE
+        cd ..
     fi
 done
 

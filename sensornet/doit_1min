@@ -8,9 +8,9 @@
 ########################################################################
 /home/andreas/projekte/sensornet/bmp280/baro.py
 
-for j in coretemp coretemp2 load
-do
-    /home/andreas/rrdtool/$j/fill_db
-done
+#for j in coretemp coretemp2 load
+#do
+#    /home/andreas/rrdtool/$j/fill_db
+#done
 
 exit 0

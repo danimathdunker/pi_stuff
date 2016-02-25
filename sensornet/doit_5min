@@ -9,9 +9,9 @@
 
 /home/andreas/projekte/sensornet/bmp280/graph_db
 
-for j in coretemp coretemp2 load
-do
-    /home/andreas/rrdtool/$j/graph_db
-done
+#for j in coretemp coretemp2 load
+#do
+#    /home/andreas/rrdtool/$j/graph_db
+#done
 
 exit 0
