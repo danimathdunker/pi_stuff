@@ -179,4 +179,4 @@ if (device.readS8(BMP280_REGISTER_CHIPID) == 0x58): # check sensor id 0x58=BMP28
 
     client.connect("localhost", 1883, 60)
 
-    client.publish ("/wohnung/misc/bmp280", loctime + " " + unixtime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
+    client.publish ("wohnung/misc/bmp280", loctime + " " + unixtime + " {:.2f}".format (temp) + " {:.2f}".format (press/100))
