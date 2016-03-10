@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+#   fill_bmp280 - fills the RRDs for BMP280 data with 
+#                 actual values
+#
+#   2016-03-10   Andreas Dunker   created
+#
+########################################################################
+
+DUMMY=$@
+read TIME UNIXTIME TEMPERATURE PRESSURE <<< $DUMMY
+rrdtool update bmp280temp.rrd $UNIXTIME:$TEMPERATURE
+rrdtool update bmp280press.rrd $UNIXTIME:$PRESSURE
+L=$(tail -1 bmp280.txt | awk '{print $2}')
+DIFF=$(($UNIXTIME-$L))
+if [ $DIFF -gt 120 ]
+then
+    echo "" >> bmp280.txt
+fi
+echo $DUMMY >> bmp280.txt
+exit 0

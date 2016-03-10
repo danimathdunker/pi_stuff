@@ -8,9 +8,7 @@ do
     if [ "wohnung/misc/bmp280" = "$TOPIC" ]
     then
         cd bmp280
-        read TIME UNIXTIME TEMPERATURE PRESSURE <<< $DUMMY
-        rrdtool update bmp280temp.rrd $UNIXTIME:$TEMPERATURE
-        rrdtool update bmp280press.rrd $UNIXTIME:$PRESSURE
+        ./fill_bmp280 "$DUMMY"
         cd ..
     fi
 done
