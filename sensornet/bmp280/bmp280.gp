@@ -18,5 +18,5 @@ set y2tics textcolor rgbcolor "navy"
 
 set title "alle Daten" textcolor rgbcolor "navy"
 
-plot 'bmp280.txt' using 1:4 with lines lt 4 notitle, \
-     'bmp280.txt' using 1:3 axes x1y2 with lines notitle
+plot 'bmp280.txt' using 1:4 with lines lt 4 title "Luftdruck", \
+     'bmp280.txt' using 1:3 axes x1y2 with lines title "Temperatur"
