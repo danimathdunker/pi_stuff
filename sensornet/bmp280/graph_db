@@ -7,6 +7,13 @@
 ########################################################################
 cd /home/andreas/projekte/sensornet/bmp280
 
+tail -1440 bmp280.txt > bmp280_1day.txt
+tail -10080 bmp280.txt > bmp280_1week.txt
+
+gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" bmp280_1day.gp
+gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" bmp280_1week.gp
+gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" bmp280.gp
+
 for ZEIT in "1hour" "6hours" "1day" "1week" "1month" "1year"
 do
     rrdtool graph bmp280_temp_$ZEIT.png \
