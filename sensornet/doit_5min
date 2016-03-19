@@ -8,5 +8,6 @@
 ########################################################################
 
 /home/andreas/projekte/sensornet/bmp280/graph_bmp280
+/home/andreas/projekte/sensornet/monitor/graph_moni
 
 exit 0

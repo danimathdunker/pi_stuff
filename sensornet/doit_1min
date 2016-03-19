@@ -7,5 +7,6 @@
 #
 ########################################################################
 /home/andreas/projekte/sensornet/bmp280/baro.py
+/home/andreas/projekte/sensornet/monitor/get_df
 
 exit 0
