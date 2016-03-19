@@ -6,3 +6,7 @@ Programs for the home sensor network
 
 reading temperatur and pressure from BMP280 and sending them to a MQTT topic
 
+## monitor
+
+Scripts and files to monitor a Raspberry Pi
+
