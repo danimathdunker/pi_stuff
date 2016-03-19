@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+#   graph_moni - creates graphics for Raspberry data
+#
+#   2016-03-19   Andreas Dunker   created
+#
+########################################################################
+cd /home/andreas/projekte/sensornet/monitor
+
+./graph_df
+
+mv *.png /var/www/html/sensornet/monitor
+exit 0

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+#   fill_moni - fills the textfiles with
+#               actual values
+#
+#   2016-03-19   Andreas Dunker   created
+#
+########################################################################
+
+DUMMY=$@
+UNIXTIME=$(date '+%s')
+ISOTIME=$(date '+%FT%T')
+
+read TOPIC SUM USED AVAIL <<< $DUMMY
+read D HOST FACILITY <<< $(echo $TOPIC | awk -F/ '{printf ("%s %s %s\n", $1, $2, $3)}')
+FILENAME=$HOST.$FACILITY.txt
+
+L=$(tail -1 $FILENAME | awk '{print $2}')
+DIFF=$(($UNIXTIME-$L))
+if [ $DIFF -gt 90 ]
+then
+    echo "" >> $FILENAME
+fi
+
+echo $ISOTIME $UNIXTIME $SUM $USED $AVAIL >> $FILENAME
+exit 0

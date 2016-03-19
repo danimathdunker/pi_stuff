@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+#   fill_moni - fills the textfiles with
+#               actual values
+#
+#   2016-03-19   Andreas Dunker   created
+#
+########################################################################
+
+DUMMY=$@
+./fill_df $DUMMY
+exit 0
