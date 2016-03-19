@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 #
-#   fill_db - fills the RRDs with 
+#   fill_db - fills the databases & textfiles
+#
+#   2016-03-10   Andreas Dunker   created
+#
+########################################################################
 
 cd /home/andreas/projekte/sensornet
 mosquitto_sub -v -t "#" | while read TOPIC DUMMY

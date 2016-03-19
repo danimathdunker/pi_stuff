@@ -9,8 +9,7 @@
 
 DUMMY=$@
 read TIME UNIXTIME TEMPERATURE PRESSURE <<< $DUMMY
-rrdtool update bmp280temp.rrd $UNIXTIME:$TEMPERATURE
-rrdtool update bmp280press.rrd $UNIXTIME:$PRESSURE
+
 L=$(tail -1 bmp280.txt | awk '{print $2}')
 DIFF=$(($UNIXTIME-$L))
 if [ $DIFF -gt 120 ]
