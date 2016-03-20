@@ -11,7 +11,7 @@ cd /home/andreas/projekte/sensornet/monitor
 #tail -10080 lemath01.df.txt > lemath01.df_1week.txt
 #tail -43200 lemath01.df.txt > lemath01.df_1month.txt
 
-for j in *.gp
+for j in *.df.gp
 do
     gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" $j
 done

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+#   graph_temp - creates graphics for CPU temperature
+#
+#   2016-03-19   Andreas Dunker   created
+#
+########################################################################
+cd /home/andreas/projekte/sensornet/monitor
+
+#tail -1440  lemath01.temperature.txt > lemath01.temperature_1day.txt
+#tail -10080 lemath01.temperature.txt > lemath01.temperature_1week.txt
+#tail -43200 lemath01.temperature.txt > lemath01.temperature_1month.txt
+
+for j in *.temperature.gp
+do
+    gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" $j
+done
+
+exit 0

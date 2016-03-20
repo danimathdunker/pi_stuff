@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-#   fill_df - fills dusk usage
+#   fill_temp - fills the textfiles with
+#               CPU temperature
 #
 #   2016-03-19   Andreas Dunker   created
 #
@@ -10,7 +11,7 @@ DUMMY=$@
 UNIXTIME=$(date '+%s')
 ISOTIME=$(date '+%FT%T')
 
-read TOPIC SUM USED AVAIL <<< $DUMMY
+read TOPIC TEMP <<< $DUMMY
 read D HOST FACILITY <<< $(echo $TOPIC | awk -F/ '{printf ("%s %s %s\n", $1, $2, $3)}')
 FILENAME=$HOST.$FACILITY.txt
 
@@ -21,5 +22,5 @@ then
     echo "" >> $FILENAME
 fi
 
-echo $ISOTIME $UNIXTIME $SUM $USED $AVAIL >> $FILENAME
+echo $ISOTIME $UNIXTIME $TEMP >> $FILENAME
 exit 0

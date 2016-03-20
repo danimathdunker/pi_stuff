@@ -8,6 +8,7 @@
 cd /home/andreas/projekte/sensornet/monitor
 
 ./graph_df
+./graph_temp
 
 mv *.png /var/www/html/sensornet/monitor
 exit 0

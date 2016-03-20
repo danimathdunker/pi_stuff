@@ -8,5 +8,13 @@
 ########################################################################
 
 DUMMY=$@
-./fill_df $DUMMY
+read TOPIC SUM USED AVAIL <<< $DUMMY
+read D HOST FACILITY <<< $(echo $TOPIC | awk -F/ '{printf ("%s %s %s\n", $1, $2, $3)}')
+if [ $FACILITY = "df" ]
+then
+    ./fill_df $DUMMY
+elif [ $FACILITY = "temperature" ]
+then
+    ./fill_temp $DUMMY
+fi
 exit 0

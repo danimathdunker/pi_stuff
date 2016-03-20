@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+#   get_temp - gets core temperature and puts them
+#              into MQTT queue
+#
+#   2016-03-19   Andreas Dunker   created
+#
+########################################################################
+
+H=$(hostname)
+DUMMY=$(cat /sys/class/thermal/thermal_zone0/temp)
+T=$(echo "scale=3; $DUMMY/1000.0" | bc)
+mosquitto_pub -m "$T" -t "monitor/$H/temperature"
+exit 0
