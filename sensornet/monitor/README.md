@@ -1,6 +1,6 @@
 # monitor
 
-Stuff tu monitor some data of my Raspberries
+Stuff to monitor some data of my Raspberries
 
 * `*.gp` - gnuplot files
 * `fill_moni` - calls the other fill scripts
