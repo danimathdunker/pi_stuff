@@ -21,6 +21,12 @@ do
         ./fill_moni "$TOPIC $DUMMY"
         cd ..
     fi
+    if echo $TOPIC | grep -Eq '^wohnung/temphum'
+    then
+        cd temphum
+        ./fill_temphum "$TOPIC $DUMMY"
+        cd ..
+    fi
 done
 
 exit 0

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+#   graph_temphum - creates graphics for temperature and humidity
+#
+#   2016-02-23   Andreas Dunker   created
+#
+########################################################################
+cd /home/andreas/projekte/sensornet/temphum
+
+tail -1440  Proto.txt > Volt_1day.txt
+tail -10080 Proto.txt > Volt_1week.txt
+tail -43200 Proto.txt > Volt_1month.txt
+cp -p Proto.txt Volt.txt
+
+for j in V*.gp
+do
+    gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" $j
+done
+
+mv *.png /var/www/html/sensornet/temphum
+exit 0

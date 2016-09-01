@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+#   fill_temphum - fills database with temperature and humidity
+#
+#   2016-08-28   Andreas Dunker   created
+#
+########################################################################
+
+DUMMY=$@
+UNIXTIME=$(date '+%s')
+ISOTIME=$(date '+%FT%T')
+
+read TOPIC TEMP HUMI TRIES VOLT <<< $DUMMY
+read D1 D2 SENSOR <<< $(echo $TOPIC | awk -F/ '{printf ("%s %s %s\n", $1, $2, $3)}')
+FILENAME=$SENSOR.txt
+
+L=$(tail -1 $FILENAME | awk '{print $2}')
+DIFF=$(($UNIXTIME-$L))
+if [ $DIFF -gt 90 ]
+then
+    echo "" >> $FILENAME
+fi
+
+T=$(echo "scale=2; $TEMP/100" | bc)
+H=$(echo "scale=2; $HUMI/100" | bc)
+V=$(echo "scale=3; $VOLT/1000" | bc)
+echo $ISOTIME $UNIXTIME $T $H $TRIES $V >> $FILENAME
+exit 0

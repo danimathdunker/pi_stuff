@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+#   graph_att - creates graphics for # of mqtt attempts
+#
+#   2016-02-29   Andreas Dunker   created
+#
+########################################################################
+cd /home/andreas/projekte/sensornet/temphum
+
+tail -1440  Proto.txt > Att_1day.txt
+tail -10080 Proto.txt > Att_1week.txt
+tail -43200 Proto.txt > Att_1month.txt
+cp -p Proto.txt Att.txt
+
+for j in A*.gp
+do
+    gnuplot -e "set label \"$(date '+%FT%T')\" at graph 0.01, graph 0.95" $j
+done
+
+mv *.png /var/www/html/sensornet/temphum
+exit 0
