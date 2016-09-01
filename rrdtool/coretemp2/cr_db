@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-rm coretemp2.rrd
-A=$(date '+%s')
-rrdtool create coretemp2.rrd --start $A --step=60 \
-    DS:temp:GAUGE:120:0:U \
-    RRA:LAST:0.5:1:21600 \
-    RRA:AVERAGE:0.5:10:10800
